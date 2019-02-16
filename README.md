@@ -6,13 +6,16 @@ Salesforce Profiles Deployment
 List the following metadatas 
 
 * CustomApplication
+* DataCategoryGroup
 * ApexClass
+* ApexPage
 * CustomObject
+* StandardField
 * CustomField
 * RecordType
 * CustomTab
 * Layout
-* ApexPage
+* ExternalDataSource
 * UserPermission
 
 ...
@@ -25,7 +28,14 @@ Interesct the listed metadatas between Source & Target
 
 ### 3. Substract metadatas
 
-Substract the Source list from the Target list
+Substract the Source list from the Target list for :
+
+* DataCategoryGroup
+* StandardField
+* CustomField
+* RecordType
+* CustomTab
+* UserPermission
 
 ### 4. Generate the package xml
 
@@ -35,6 +45,7 @@ Generate the package xml to extract the profiles
 
 Clean the metadatas that exists in Source but not in Target 
 
+* DataCategoryGroup
 * StandardField
 * CustomField
 * RecordType
