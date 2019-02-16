@@ -18,8 +18,6 @@ List the following metadatas
 * ExternalDataSource
 * UserPermission
 
-...
-
 from the Source & Target
 
 ### 2. Intersect metadatas 
