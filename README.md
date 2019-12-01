@@ -1,4 +1,4 @@
 # Salesforce-Profiles-Deployment 🎭📦
 
 
-<p align="center"><img src ="assets/Profiles-Deployment-Overview.PNG" width="600"/></p>
+<p align="center"><img src ="assets/Logo.png" alt="logo" width="200"/></p>
