@@ -5,4 +5,6 @@
 
 A set of [bash](https://fr.wikipedia.org/wiki/Bourne-Again_shell) & [gradle](https://gradle.org/) scripts 🧰 to easily deploy Salesforce profiles 🎭
 
-Read more in 👉 [The project wiki](https://github.com/benahm/Salesforce-Profiles-Deployment/wiki) 👈
+
+
+Read more in 👉 [the project wiki](https://github.com/benahm/Salesforce-Profiles-Deployment/wiki) 👈
