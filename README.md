@@ -8,3 +8,9 @@ A set of [bash](https://fr.wikipedia.org/wiki/Bourne-Again_shell) & [gradle](htt
 
 
 Read more in 👉 [the project wiki](https://github.com/benahm/Salesforce-Profiles-Deployment/wiki) 👈
+
+## License 📃
+
+[MIT License](LICENSE)
+
+
