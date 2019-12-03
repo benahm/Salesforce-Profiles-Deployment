@@ -13,7 +13,7 @@ Read more in 👉 [the project wiki](https://github.com/benahm/Salesforce-Profil
 
 #### Support 🤷‍♂️
 
-Report bugs 🐞 or feature 🔧 request on [Github Issues](https://github.com/benahm/Salesforce-Profiles-Deployment/issues)
+Report bugs 🐞 or feature 🔧 requests on [Github Issues](https://github.com/benahm/Salesforce-Profiles-Deployment/issues)
 
 #### License 📃
 
