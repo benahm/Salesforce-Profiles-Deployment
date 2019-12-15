@@ -1,0 +1,5 @@
+temp/
+.gradle
+.sfdx
+.vscode/settings.json
+tools/gradle/build/buildSrc/build

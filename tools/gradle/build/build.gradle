@@ -1,0 +1,57 @@
+
+
+apply plugin: "groovy"
+
+
+// intersect two list of metadatas files
+if(project.hasProperty("metadataType") && project.hasProperty("inputFile1Path") && project.hasProperty("inputFile2Path") && project.hasProperty("outputFilePath")){
+    task intersectMetadataLists(type : IntersectMetadataLists) {
+        inputFile1 = file("../../../${project.getProperty('inputFile1Path')}")
+        inputFile2 = file("../../../${project.getProperty('inputFile2Path')}")
+        outputFile = file("../../../${project.getProperty('outputFilePath')}")
+    }
+}
+
+// subtract two list of metadatas files
+if(project.hasProperty("metadataType") && project.hasProperty("inputFile1Path") && project.hasProperty("inputFile2Path") && project.hasProperty("outputFilePath")){
+    task subMetadataLists(type : SubMetadataLists) {
+        inputFile1 = file("../../../${project.getProperty('inputFile1Path')}")
+        inputFile2 = file("../../../${project.getProperty('inputFile2Path')}")
+        outputFile = file("../../../${project.getProperty('outputFilePath')}")
+    }
+}
+
+// clean profiles
+if(project.hasProperty("metadataType") && project.hasProperty("metadataTypeFolder") && project.hasProperty("profileFolder")){
+    task cleanProfiles(type : CleanProfiles) {
+        metadataType = project.getProperty("metadataType")
+        cleanFile = file("../../../${project.getProperty('metadataTypeFolder')}/SourceSubTarget.list")
+        profileFolder = file("../../../${project.getProperty('profileFolder')}")
+    }
+}
+
+// build retrieve package xml
+if(project.hasProperty("apiVersion") && project.hasProperty("packagePath") && project.hasProperty("metadataTypesPath")){
+    task generateRetrievePackageXML(type : GeneratePackageXML) {
+        apiVersion = project.getProperty("apiVersion")
+        inputCustomApplicationListFile = file("../../../${project.getProperty('metadataTypesPath')}/CustomApplication/Intersect.list")
+        inputDataCategoryGroupListFile = file("../../../${project.getProperty('metadataTypesPath')}/DataCategoryGroup/Intersect.list")
+        inputApexClassListFile = file("../../../${project.getProperty('metadataTypesPath')}/ApexClass/Intersect.list")
+        inputApexPageListFile = file("../../../${project.getProperty('metadataTypesPath')}/ApexPage/Intersect.list")
+        inputCustomObjectListFile = file("../../../${project.getProperty('metadataTypesPath')}/CustomObject/Intersect.list")
+        inputCustomTabListFile = file("../../../${project.getProperty('metadataTypesPath')}/CustomTab/Intersect.list")
+        inputLayoutListFile = file("../../../${project.getProperty('metadataTypesPath')}/Layout/Intersect.list")
+        inputExternalDataSourceListFile = file("../../../${project.getProperty('metadataTypesPath')}/ExternalDataSource/Intersect.list")
+        inputProfileListFile = file("../../../config/profiles.list")
+        outputPackageXMLFile = file("../../../${project.getProperty('packagePath')}/package.xml")
+    }
+}
+
+// build deploy package xml
+if(project.hasProperty("apiVersion") && project.hasProperty("packagePath")){
+    task generateDeployPackageXML(type : GeneratePackageXML) {
+        apiVersion = project.getProperty("apiVersion")
+        inputProfileListFile = file("../../../config/profiles.list")
+        outputPackageXMLFile = file("../../../${project.getProperty('packagePath')}/package.xml")
+    }
+}

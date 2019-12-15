@@ -1,0 +1,88 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "profiles:list:metadatatypes",
+      "type": "shell",
+      "windows": {
+        "command": "./scripts/runBash.cmd ./scripts/listMetadataTypes.sh"
+      },
+      "linux": {
+        "command": "bash ./scripts/listMetadataTypes.sh"
+      },
+      "osx": {
+        "command": "bash ./scripts/listMetadataTypes.sh"
+      },
+      "group": "build",
+      "presentation": {
+        "focus": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "profiles:generate:package",
+      "type": "shell",
+      "windows": {
+        "command": "./scripts/runBash.cmd ./scripts/generatePackage.sh"
+      },
+      "linux": {
+        "command": "bash ./scripts/generatePackage.sh"
+      },
+      "osx": {
+        "command": "bash ./scripts/generatePackage.sh"
+      },
+      "group": "build",
+      "presentation": {
+        "focus": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "profiles:deploy:package",
+      "type": "shell",
+      "windows": {
+        "command": "./scripts/runBash.cmd ./scripts/deployPackage.sh ${input:checkOnly}"
+      },
+      "linux": {
+        "command": "bash ./scripts/deployPackage.sh ${input:checkOnly}"
+      },
+      "osx": {
+        "command": "bash ./scripts/deployPackage.sh ${input:checkOnly}"
+      },
+      "group": "build",
+      "presentation": {
+        "focus": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "profiles:clean:package",
+      "type": "shell",
+      "windows": {
+        "command": "./scripts/runBash.cmd ./scripts/cleanPackage.sh"
+      },
+      "linux": {
+        "command": "bash ./scripts/cleanPackage.sh"
+      },
+      "osx": {
+        "command": "bash ./scripts/cleanPackage.sh"
+      },
+      "group": "build",
+      "presentation": {
+        "focus": true
+      },
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "checkOnly",
+      "description": "Is it a test deploy ?",
+      "default": "Y",
+      "options": ["Y", "N"],
+      "type": "pickString"
+    }
+  ]
+}
