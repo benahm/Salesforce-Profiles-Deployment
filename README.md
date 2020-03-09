@@ -17,7 +17,7 @@ A set of [bash](https://fr.wikipedia.org/wiki/Bourne-Again_shell) & [gradle](htt
 
 #### Support 🤷‍♂️
 
-Report bugs 🐞 or feature 🔧 requests on [Github Issues](https://github.com/benahm/Salesforce-Profiles-Deployment/issues)
+Please report bugs 🐞 or feature 🔧 requests on [Github Issues](https://github.com/benahm/Salesforce-Profiles-Deployment/issues)
 
 #### License 📃
 
