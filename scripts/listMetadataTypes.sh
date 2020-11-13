@@ -120,11 +120,12 @@ function listMetadataType(){
 
     mkdir -p ${metadataTypeFolder}
     echo -ne "Listing ${metadataType} from ${org}(${type})... ⏳ "
-    sfdx force:mdapi:listmetadata -u ${org} -m ${metadataType} -f ${metadataTypeFolder}/${type}.list.json &>/dev/null
+    output="$(sfdx force:mdapi:listmetadata -u ${org} -m ${metadataType} -f ${metadataTypeFolder}/${type}.list.json 2>&1)"
     if [ $? -ne 0 ]
     then
         echo
         echo -e "\e[31mError listMetadataType ${metadataType}"
+        echo -e "\e[31m${output}"
         exit 1
     fi
     echo -e "\rListing ${metadataType} from ${org}(${type})... ✅ "
@@ -147,11 +148,12 @@ function describeMetadataType(){
 
     mkdir -p ${metadataTypeFolder}
     echo -ne "Describing ${metadataType} from ${org}(${type})...⏳ "
-    sfdx force:schema:sobject:describe -u ${org} -s ${metadataType} --json > ${metadataTypeFolder}/${type}.list.json
+    output="$(sfdx force:schema:sobject:describe -u ${org} -s ${metadataType} --json > ${metadataTypeFolder}/${type}.list.json)"
     if [ $? -ne 0 ]
     then
         echo
         echo -e "\e[31mError describeMetadataType ${metadataType}"
+        echo -e "\e[31${output}"
         exit 1
     fi
     echo -e "\rDescribing ${metadataType} from ${org}(${type})...✅ "
@@ -172,11 +174,12 @@ function intersectMetadataType(){
 
     # intersect a metadataType
     echo -ne "Intersecting ${metadataType}...⏳ "
-    ${GRADLE_BIN_PATH} -p ${GRADLE_BUILD_PATH} -PmetadataType=${metadataType} -PinputFile1Path=${metadataTypeFolder}/Source.list.json -PinputFile2Path=${metadataTypeFolder}/Target.list.json -PoutputFilePath=${metadataTypeFolder}/Intersect.list intersectMetadataLists &>/dev/null
+    output="$(${GRADLE_BIN_PATH} -p ${GRADLE_BUILD_PATH} -PmetadataType=${metadataType} -PinputFile1Path=${metadataTypeFolder}/Source.list.json -PinputFile2Path=${metadataTypeFolder}/Target.list.json -PoutputFilePath=${metadataTypeFolder}/Intersect.list intersectMetadataLists 2>&1)"
     if [ $? -ne 0 ]
     then
         echo
         echo -e "\e[31mError intersectMetadataType ${metadataType}"
+        echo -e "\e[31${output}"
         exit 1
     fi
     echo -e "\rIntersecting ${metadataType}...✅ "
@@ -196,11 +199,12 @@ function subMetadataType(){
 
     # Subtract a metadataType
     echo -ne "Subtracting ${metadataType}...⏳ "
-    ${GRADLE_BIN_PATH} -p ${GRADLE_BUILD_PATH} -PmetadataType=${metadataType} -PinputFile1Path=${metadataTypeFolder}/Source.list.json -PinputFile2Path=${metadataTypeFolder}/Target.list.json -PoutputFilePath=${metadataTypeFolder}/SourceSubTarget.list subMetadataLists &>/dev/null
+    output="$(${GRADLE_BIN_PATH} -p ${GRADLE_BUILD_PATH} -PmetadataType=${metadataType} -PinputFile1Path=${metadataTypeFolder}/Source.list.json -PinputFile2Path=${metadataTypeFolder}/Target.list.json -PoutputFilePath=${metadataTypeFolder}/SourceSubTarget.list subMetadataLists 2>&1)"
     if [ $? -ne 0 ]
     then
         echo
         echo -e "\e[31mError SubtractMetadataType ${metadataType}"
+        echo -e "\e[31${output}"
         exit 1
     fi
     echo -e "\rSubtracting ${metadataType}...✅ "

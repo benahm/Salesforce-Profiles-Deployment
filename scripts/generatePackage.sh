@@ -46,14 +46,20 @@ function buildPackage(){
 function generateRetrievePackageXML(){
 
     echo
-    echo "Build Retrieve Package.xml"
-    ${GRADLE_BIN_PATH} -p ${GRADLE_BUILD_PATH} -PapiVersion=${API_VERSION} -PpackagePath=temp/RetrievePackage -PmetadataTypesPath=temp/MetadataTypes generateRetrievePackageXML 
+    echo "Build the retrieve Package.xml"
+    echo -ne "\rIn Progress... ⏳ "
+    output="$(${GRADLE_BIN_PATH} -p ${GRADLE_BUILD_PATH} -PapiVersion=${API_VERSION} -PpackagePath=temp/RetrievePackage -PmetadataTypesPath=temp/MetadataTypes generateRetrievePackageXML)"
     if [ $? -ne 0 ]
     then
         echo
         echo -e "\e[31mError generateRetrievePackageXML"
+        echo -e "\e[31m${output}"
         exit 1
+    else
+        echo -e "\rDone ✅           "
+        echo -e "$(cat temp/RetrievePackage/package.xml)"
     fi
+
 }
 
 #######################################
@@ -67,23 +73,24 @@ function retrievePackage(){
 
     echo
     echo -e "\rRetrieve profiles from ${SOURCE_ORG}"
-    echo -ne "\rIn Progress... ⏳ "
-    sfdx force:source:retrieve -u ${SOURCE_ORG} -x temp/RetrievePackage/package.xml &>/dev/null
+    echo -e "Please wait this step may take few minutes..."
+    sfdx force:mdapi:retrieve -u ${SOURCE_ORG} -k temp/RetrievePackage/package.xml -r temp/TempPackage -w -1
     if [ $? -ne 0 ]
     then
         echo
         echo -e "\e[31mError retrievePackage : retrieving the package"
+        echo -e "\e[31m${output}"
         exit 1
     fi
-    echo -e "\rDone ✅           "
 
-    echo -e "\rConverting profiles package to metadata format"
+    echo -e "\rUnzipping the package"
     echo -ne "\rIn Progress... ⏳ "
-    sfdx force:source:convert -p temp/TempPackage -d temp/RetrievePackage &>/dev/null
+    output="$(unzip temp/TempPackage/unpackaged.zip -d temp/RetrievePackage 2>&1)"
     if [ $? -ne 0 ]
     then
         echo
-        echo -e "\e[31mError retrievePackage : converting the package"
+        echo -e "\e[31mError retrievePackage : unzipping the package"
+        echo -e "\e[31m${output}"
         exit 1
     fi
     echo -e "\rDone ✅           "
@@ -102,17 +109,21 @@ function generateDeployPackage(){
 
     echo
     echo -e "\rCopying profiles to the deploy package"
-    cp -r temp/RetrievePackage/profiles temp/DeployPackage/profiles
+    cp -r temp/RetrievePackage/unpackaged/profiles temp/DeployPackage/profiles
 
     echo
     echo -e "\rBuild Target Package.xml"
-    ${GRADLE_BIN_PATH} -p ${GRADLE_BUILD_PATH} -PapiVersion=${API_VERSION} -PpackagePath=temp/DeployPackage generateDeployPackageXML 
+    output="$(${GRADLE_BIN_PATH} -p ${GRADLE_BUILD_PATH} -PapiVersion=${API_VERSION} -PpackagePath=temp/DeployPackage generateDeployPackageXML)"
     if [ $? -ne 0 ]
     then
         echo
         echo -e "\e[31mError generateDeployPackage"
+        echo -e "\e[31m${output}"
         exit 1
+    else
+        echo -e "$(cat temp/DeployPackage/package.xml)"
     fi
+
 }
 
 #######################################
@@ -122,31 +133,34 @@ function cleanProfiles(){
 
     echo
     echo -ne "\rCleaning CustomFields 🧹 "
-    ${GRADLE_BIN_PATH} -p ${GRADLE_BUILD_PATH} -PmetadataType=CustomField -PmetadataTypeFolder=temp/MetadataTypes/CustomField -PprofileFolder=temp/DeployPackage/profiles cleanProfiles &>/dev/null
+    output="$(${GRADLE_BIN_PATH} -p ${GRADLE_BUILD_PATH} -PmetadataType=CustomField -PmetadataTypeFolder=temp/MetadataTypes/CustomField -PprofileFolder=temp/DeployPackage/profiles cleanProfiles 2>&1)"
     if [ $? -ne 0 ]
     then
         echo
         echo -e "\e[31mError cleanProfiles : CustomFields"
+        echo -e "\e[31m${output}"
         exit 1
     fi
     echo -e "\rCleaning CustomFields ✅ "
 
     echo -ne "\rCleaning RecordTypes 🧹 "
-    ${GRADLE_BIN_PATH} -p ${GRADLE_BUILD_PATH} -PmetadataType=RecordType -PmetadataTypeFolder=temp/MetadataTypes/RecordType -PprofileFolder=temp/DeployPackage/profiles cleanProfiles &>/dev/null
+    output="$(${GRADLE_BIN_PATH} -p ${GRADLE_BUILD_PATH} -PmetadataType=RecordType -PmetadataTypeFolder=temp/MetadataTypes/RecordType -PprofileFolder=temp/DeployPackage/profiles cleanProfiles 2>&1)"
     if [ $? -ne 0 ]
     then
         echo
         echo -e "\e[31mError cleanProfiles : RecordTypes"
+        echo -e "\e[31m${output}"
         exit 1
     fi
     echo -e "\rCleaning RecordTypes ✅ "
 
     echo -ne "\rCleaning UserPermissions 🧹 "
-    ${GRADLE_BIN_PATH} -p ${GRADLE_BUILD_PATH} -PmetadataType=UserPermission -PmetadataTypeFolder=temp/MetadataTypes/UserPermission -PprofileFolder=temp/DeployPackage/profiles cleanProfiles &>/dev/null
+    output="$(${GRADLE_BIN_PATH} -p ${GRADLE_BUILD_PATH} -PmetadataType=UserPermission -PmetadataTypeFolder=temp/MetadataTypes/UserPermission -PprofileFolder=temp/DeployPackage/profiles cleanProfiles 2>&1)"
     if [ $? -ne 0 ]
     then
         echo
         echo -e "\e[31mError cleanProfiles : UserPermissions"
+        echo -e "\e[31m${output}"
         exit 1
     fi
     echo -e "\rCleaning UserPermissions ✅ "
