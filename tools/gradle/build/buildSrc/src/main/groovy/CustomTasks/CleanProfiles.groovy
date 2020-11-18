@@ -78,30 +78,32 @@ class CleanProfiles extends DefaultTask {
         cleanMap.each{ key, list ->
             def node = getProperty(xml,key)
             def nodeToDelete = node.findAll{ elem ->
-                if(key == 'recordTypeVisibilities.recordType'){
-                    // collect sobject that have no default record type
-                    if(elem.parent().default == 'true' || elem.parent().personAccountDefault == 'true'){
-                        def sObjectType = Utility.substringBefore(elem.parent().recordType.text(),".")
-                        rt.add(sObjectType)
-                    }
-                }
+                // disabled need more tests
+                // if(key == 'recordTypeVisibilities.recordType'){
+                //     // collect sobject that have no default record type
+                //     if(elem.parent().default == 'true' || elem.parent().personAccountDefault == 'true'){
+                //         def sObjectType = Utility.substringBefore(elem.parent().recordType.text(),".")
+                //         rt.add(sObjectType)
+                //     }
+                // }
                 return list.contains(elem.text()) 
             }
             def parent = nodeToDelete.parent()
             parent.replaceNode { } // clean
         }
         
+        // disabled need more tests
         // set record types visible and default to false if the default record type was cleaned
-        def node = getProperty(xml,'recordTypeVisibilities.recordType')
-        node.each{ elem ->
-            def sObjectType = Utility.substringBefore(elem.parent().recordType.text(),".")
-            if(rt.contains(sObjectType)){
-                // set to not visible/default
-                elem.parent().default = "false"
-                elem.parent().personAccountDefault = "false"
-                elem.parent().visible = "false"
-            }
-        }
+        // def node = getProperty(xml,'recordTypeVisibilities.recordType')
+        // node.each{ elem ->
+        //     def sObjectType = Utility.substringBefore(elem.parent().recordType.text(),".")
+        //     if(rt.contains(sObjectType)){
+        //         // set to not visible/default
+        //         elem.parent().default = "false"
+        //         elem.parent().personAccountDefault = "false"
+        //         elem.parent().visible = "false"
+        //     }
+        // }
 
         profileFile.write groovy.xml.XmlUtil.serialize(xml)
 
